@@ -17,7 +17,12 @@ func main() {
 		ID:            0,
 		TasksFilePath: "tasks.json",
 	}
-
+	id, err := cfg.getCurrentID()
+	if err != nil {
+		fmt.Printf("Error getting current ID: %v\n", err)	
+	}
+	cfg.ID = id
+	fmt.Printf("Current ID: %v\n", cfg.ID)
 	fmt.Println("Task-Tracker running ...")
 
 	for scanner.Scan() {

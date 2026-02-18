@@ -45,3 +45,19 @@ func (cfg *config) marshalTasks(tasks []Task) error {
 	}
 	return nil
 }
+
+func (cfg *config) getCurrentID() (int, error) {
+	tasks, err := unmarshalTasks(cfg.TasksFilePath)
+	if err != nil {
+		return 0, fmt.Errorf("failed to unmarshal tasks: %w", err)
+	}
+
+	maxID := 0
+	for _, task := range tasks {
+		if task.ID > maxID {
+			maxID = task.ID
+		}
+	}
+	maxID++
+	return maxID, nil
+}

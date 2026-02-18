@@ -125,3 +125,4 @@ func (cfg *config) delete(args []string) error {
 	fmt.Printf("Task %v deleted\n", id)
 	return nil
 }
+
