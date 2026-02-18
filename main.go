@@ -19,10 +19,10 @@ func main() {
 	}
 	id, err := cfg.getCurrentID()
 	if err != nil {
-		fmt.Printf("Error getting current ID: %v\n", err)	
+		fmt.Printf("Error getting current ID: %v\n", err)
 	}
 	cfg.ID = id
-	fmt.Printf("Current ID: %v\n", cfg.ID)
+
 	fmt.Println("Task-Tracker running ...")
 
 	for scanner.Scan() {
@@ -56,6 +56,16 @@ func main() {
 			err := cfg.delete(args)
 			if err != nil {
 				fmt.Printf("Error deleting task: %v\n", err)
+			}
+		case "mark-in-progress":
+			err := cfg.markInProgress(args)
+			if err != nil {
+				fmt.Printf("Error changing task status: %v\n", err)
+			}
+		case "mark-done":
+			err := cfg.markDone(args)
+			if err != nil {
+				fmt.Printf("Error changing task status: %v\n", err)
 			}
 		default:
 			fmt.Println("Command not implemented yet")
