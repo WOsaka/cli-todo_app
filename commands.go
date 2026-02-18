@@ -69,6 +69,7 @@ func (cfg *config) update(args []string) error {
 		}
 		if i == len(tasks)-1 {
 			fmt.Println("Task not found")
+			return nil
 		}
 	}
 
@@ -78,5 +79,49 @@ func (cfg *config) update(args []string) error {
 	}
 
 	fmt.Printf("Description of task %v updated to: %s\n", id, description)
+	return nil
+}
+
+func (cfg *config) delete(args []string) error {
+	// Check if the description argument is provided
+	if len(args) < 1 {
+		fmt.Println("Usage: delete <ID>")
+		return nil
+	}
+
+	id, err := strconv.Atoi(args[0])
+	if err != nil {
+		return fmt.Errorf("invalid ID: %w", err)
+	}
+
+	tasks, err := unmarshalTasks(cfg.TasksFilePath)
+	if err != nil {
+		return fmt.Errorf("failed to unmarshal tasks: %w", err)
+	}
+
+	if len(tasks) == 0 {
+		fmt.Println("Task not found")
+		return nil
+	}
+
+	for i, task := range tasks {
+		if task.ID == id {
+			fmt.Println(len(tasks))
+			tasks = append(tasks[:i], tasks[i+1:]...)
+			break
+		}
+
+		if i == len(tasks)-1 {
+			fmt.Println("Task not found")
+			return nil
+		}
+	}
+
+	err = cfg.marshalTasks(tasks)
+	if err != nil {
+		return err
+	}
+
+	fmt.Printf("Task %v deleted\n", id)
 	return nil
 }

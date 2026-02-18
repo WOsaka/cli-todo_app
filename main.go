@@ -47,6 +47,11 @@ func main() {
 			if err != nil {
 				fmt.Printf("Error updating task: %v\n", err)
 			}
+		case "delete":
+			err := cfg.delete(args)
+			if err != nil {
+				fmt.Printf("Error deleting task: %v\n", err)
+			}
 		default:
 			fmt.Println("Command not implemented yet")
 		}
