@@ -14,7 +14,7 @@ func main() {
 	commands := []string{"add", "update", "delete", "mark-in-progress", "mark-done", "list", "list done", "list todo", "list in-progress"}
 
 	cfg := &config{
-		ID: 0,
+		ID:            0,
 		TasksFilePath: "tasks.json",
 	}
 
@@ -39,8 +39,13 @@ func main() {
 		switch cmd {
 		case "add":
 			err := cfg.add(args)
-			if err!= nil {
+			if err != nil {
 				fmt.Printf("Error adding task: %v\n", err)
+			}
+		case "update":
+			err := cfg.update(args)
+			if err != nil {
+				fmt.Printf("Error updating task: %v\n", err)
 			}
 		default:
 			fmt.Println("Command not implemented yet")
