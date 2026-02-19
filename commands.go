@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"strconv"
+	"strings"
 	"time"
 )
 
@@ -12,7 +13,7 @@ func (cfg *config) add(args []string) error {
 		return nil
 	}
 
-	description := args[0]
+	description := strings.Join(args, " ") 
 
 	tasks, err := unmarshalTasks(cfg.TasksFilePath)
 	if err != nil {
@@ -52,7 +53,7 @@ func (cfg *config) update(args []string) error {
 	if err != nil {
 		return fmt.Errorf("invalid ID: %w", err)
 	}
-	description := args[1]
+	description := strings.Join(args[1:], " ") 
 
 	tasks, err := unmarshalTasks(cfg.TasksFilePath)
 	if err != nil {
