@@ -67,6 +67,11 @@ func main() {
 			if err != nil {
 				fmt.Printf("Error changing task status: %v\n", err)
 			}
+		case "list":
+			err := cfg.list(args)
+			if err != nil {
+				fmt.Printf("Error listing tasks: %v\n", err)
+			}
 		default:
 			fmt.Println("Command not implemented yet")
 		}

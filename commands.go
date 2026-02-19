@@ -7,7 +7,6 @@ import (
 )
 
 func (cfg *config) add(args []string) error {
-	// Check if the description argument is provided
 	if len(args) < 1 {
 		fmt.Println("Usage: add <description>")
 		return nil
@@ -44,7 +43,6 @@ func (cfg *config) add(args []string) error {
 }
 
 func (cfg *config) update(args []string) error {
-	// Check if the description argument is provided
 	if len(args) < 2 {
 		fmt.Println("Usage: update <ID> <description>")
 		return nil
@@ -83,7 +81,6 @@ func (cfg *config) update(args []string) error {
 }
 
 func (cfg *config) delete(args []string) error {
-	// Check if the description argument is provided
 	if len(args) < 1 {
 		fmt.Println("Usage: delete <ID>")
 		return nil
@@ -127,7 +124,6 @@ func (cfg *config) delete(args []string) error {
 }
 
 func (cfg *config) markInProgress(args []string) error {
-	// Check if the description argument is provided
 	if len(args) < 1 {
 		fmt.Println("Usage: mark-in-progress <ID>")
 		return nil
@@ -175,7 +171,6 @@ func (cfg *config) markInProgress(args []string) error {
 }
 
 func (cfg *config) markDone(args []string) error {
-	// Check if the description argument is provided
 	if len(args) < 1 {
 		fmt.Println("Usage: mark-done <ID>")
 		return nil
@@ -219,5 +214,43 @@ func (cfg *config) markDone(args []string) error {
 	}
 
 	fmt.Printf("Status of task %v changed to: \"done\"\n", id)
+	return nil
+}
+
+func (cfg *config) list(args []string) error {
+	filterStatus := ""
+	if len(args) > 0 {
+		filterStatus = args[0]
+	}
+
+	validStatuses := []string{"", "done", "in-progress", "todo"}
+	for i, s := range validStatuses {
+		if filterStatus == s {
+			break
+		}
+		if i == len(validStatuses)-1 {
+			fmt.Println("Usage: list <Status>")
+			return nil
+		}
+	}
+
+	tasks, err := unmarshalTasks(cfg.TasksFilePath)
+	if err != nil {
+		return fmt.Errorf("failed to unmarshal tasks: %w", err)
+	}
+
+	if len(tasks) == 0 {
+		fmt.Println("No tasks found")
+		return nil
+	}
+
+	fmt.Println("ID\tDescription")
+	for _, task := range tasks {
+		if task.Status != filterStatus && filterStatus != "" {
+			continue
+		}
+		fmt.Printf("%v\t%v\n", task.ID, task.Description)
+	}
+
 	return nil
 }
